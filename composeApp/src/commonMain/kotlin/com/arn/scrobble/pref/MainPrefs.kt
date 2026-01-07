@@ -266,7 +266,7 @@ data class MainPrefs(
         const val PREF_DELAY_PER_MIN = 30
         const val PREF_DELAY_PER_MAX = 95
         const val PREF_MIN_DURATON_SECS_DEFAULT = 30
-        const val PREF_MIN_DURATON_SECS_MIN = 10
+        const val PREF_MIN_DURATON_SECS_MIN = 1
         const val PREF_MIN_DURATON_SECS_MAX = 60
 
         fun migrations() = listOf<DataMigration<MainPrefs>>(
