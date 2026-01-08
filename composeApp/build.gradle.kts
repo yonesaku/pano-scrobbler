@@ -240,6 +240,7 @@ buildkonfig {
         xor(spotifyRefreshToken, APP_ID),
         "const = true"
     )
+}
 
 
     targetConfigs {
