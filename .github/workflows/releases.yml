@@ -56,9 +56,6 @@ jobs:
           $ANDROID_HOME/cmdline-tools/**/bin/sdkmanager --update
           $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --list_installed
           ./gradlew androidApp:assembleReleaseGithub
-mkdir -p dist
-cp androidApp/build/outputs/apk/releaseGithub/*.apk dist/pano-scrobbler-android-universal.apk
-
           ./gradlew --stop
 
       - name: Install Liberica NIK (GraalVM)
