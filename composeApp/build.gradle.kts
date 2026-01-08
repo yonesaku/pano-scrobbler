@@ -193,14 +193,9 @@ buildkonfig {
         buildConfigField(STRING, "CHANGELOG", CHANGELOG, const = true)
         buildConfigField(BOOLEAN, "DEBUG", (!isReleaseBuild).toString(), const = true)
 
-val lastfmKey = localProperties["lastfm.key"]
-            ?: throw IllegalStateException("lastfm.key not found in local.properties")
-
-        val lastfmSecret = localProperties["lastfm.secret"]
-            ?: throw IllegalStateException("lastfm.secret not found in local.properties")
-
-        val spotifyRefreshToken = localProperties["spotify.refreshToken"]
-            ?: throw IllegalStateException("spotify.refreshToken not found in local.properties")
+val lastfmKey = "2fe05374a3298e9df67ec4edfccc3296"
+val lastfmSecret = "ae7e4ab68a0f924522e8451d67438001"
+val spotifyRefreshToken = "dummy"
 
         buildConfigField(
             STRING,
