@@ -193,54 +193,35 @@ buildkonfig {
         buildConfigField(STRING, "CHANGELOG", CHANGELOG, const = true)
         buildConfigField(BOOLEAN, "DEBUG", (!isReleaseBuild).toString(), const = true)
 
-            // --- 1. DEFINE HOW TO READ THE FILE ---
-    // (Put this right before the block where you use the keys)
-    val localProperties = java.util.Properties()
-    val localFile = rootProject.file("local.properties") // Looks in root first
-    if (localFile.exists()) {
-        localProperties.load(localFile.inputStream())
-    } else {
-        // Fallback: Check inside the current directory (composeApp)
-        val appLocalFile = file("local.properties")
-        if (appLocalFile.exists()) {
-            localProperties.load(appLocalFile.inputStream())
-        }
+val lastfmKey = localProperties["lastfm.key"]
+            ?: throw IllegalStateException("lastfm.key not found in local.properties")
+
+        val lastfmSecret = localProperties["lastfm.secret"]
+            ?: throw IllegalStateException("lastfm.secret not found in local.properties")
+
+        val spotifyRefreshToken = localProperties["spotify.refreshToken"]
+            ?: throw IllegalStateException("spotify.refreshToken not found in local.properties")
+
+        buildConfigField(
+            STRING,
+            "LASTFM_KEY",
+            xor(lastfmKey, APP_ID),
+            const = true
+        )
+        buildConfigField(
+            STRING,
+            "LASTFM_SECRET",
+            xor(lastfmSecret, APP_ID),
+            const = true
+        )
+        buildConfigField(
+            STRING,
+            "SPOTIFY_REFRESH_TOKEN",
+            xor(spotifyRefreshToken, APP_ID),
+            const = true
+        )
+
     }
-
-    // --- 2. THE FIXED VARIABLE DEFINITIONS ---
-    // We use .getProperty() to read from the file we just loaded above.
-    // If the key isn't in the file, we use the fallback string you provided.
-    
-    val lastfmKey = localProperties.getProperty("lastfm.key") 
-        ?: "2fe05374a3298e9df67ec4edfccc3296"
-
-    val lastfmSecret = localProperties.getProperty("lastfm.secret") 
-        ?: "ae7e4ab68a0f924522e8451d67438001"
-
-    // Spotify has no fallback, so it must be in the file or the build will fail
-    val spotifyRefreshToken = localProperties.getProperty("spotify.refreshToken")
-        ?: throw IllegalStateException("spotify.refreshToken not found in local.properties")
-
-    // --- 3. THE CONFIG FIELDS ---
-    buildConfigField(
-        "String",
-        "LASTFM_KEY",
-        xor(lastfmKey, APP_ID),
-        "const = true"
-    )
-    buildConfigField(
-        "String",
-        "LASTFM_SECRET",
-        xor(lastfmSecret, APP_ID),
-        "const = true"
-    )
-    buildConfigField(
-        "String",
-        "SPOTIFY_REFRESH_TOKEN",
-        xor(spotifyRefreshToken, APP_ID),
-        "const = true"
-    )
-}
 
 
     targetConfigs {
