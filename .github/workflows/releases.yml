@@ -56,6 +56,11 @@ jobs:
           $ANDROID_HOME/cmdline-tools/**/bin/sdkmanager --update
           $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --list_installed
           ./gradlew androidApp:assembleReleaseGithub
+          
+          # This part moves the file so the "Upload" step can find it
+          mkdir -p dist
+          cp androidApp/build/outputs/apk/releaseGithub/*.apk dist/pano-scrobbler-android-universal.apk
+          
           ./gradlew --stop
 
       - name: Install Liberica NIK (GraalVM)
@@ -83,7 +88,7 @@ jobs:
             exit 1
           fi
 
-          # Download artifacts from that run (filter by name if provided)
+          # Download artifacts from that run
           gh run download "$RUN_ID" -R "kawaiiDango/pano-native-components" -n "libs-${{ matrix.resources-dir }}" -D composeApp/resources/${{ matrix.resources-dir }}
       
       - name: Build desktop jar and native image
@@ -104,7 +109,7 @@ jobs:
         with:
           name: pano-scrobbler-android-universal
           path: dist/pano-scrobbler-android-universal*
-  
+
   upload-release:
     needs: [build]
     runs-on: windows-latest
